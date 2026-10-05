@@ -7,7 +7,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'docker build -t my-image .'
+                    sh 'docker build -t mosab/docker-react .'
                 }
             }
         }

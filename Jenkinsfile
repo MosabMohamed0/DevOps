@@ -4,19 +4,19 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Test') {
             steps {
                 script {
-                    sh 'docker build -t mosab/docker-react .'
+                    sh 'docker run --rm -v "$PWD:/app" -w /app node:18-alpine npm install'
+                    sh 'docker run --rm -v "$PWD:/app" -w /app node:18-alpine npm run test -- --watchAll=false'
                 }
             }
         }
 
-        stage('Run Test') {
+        stage('Build') {
             steps {
                 script {
-                    env.DOCKER_BUILDKIT = 1
-                    sh 'docker run -e CI=true mosab/docker-react npm run test'
+                    sh 'docker build -t mosab/docker-react .'
                 }
             }
         }

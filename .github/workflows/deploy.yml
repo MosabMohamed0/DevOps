@@ -38,3 +38,5 @@ jobs:
       - run: docker push mosab2004/mulit-server
       - run: docker push mosab2004/mulit-nginx
       - run: docker push mosab2004/mulit-worker
+
+      # Deploy to GitHub Pages

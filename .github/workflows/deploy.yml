@@ -13,16 +13,28 @@ jobs:
       - run: docker build -t mosab/docker-react -f Dockerfile.dev .
       - run: docker run -e CI=true mosab/docker-react npm run test
 
-      - name: Generate deployment package
-        run: zip -r deploy.zip . -x '*.git*'
+      # Deploy to AWS Elastic Beanstalk (commented out)
 
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v22
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: "Depi"
-          environment_name: "Depi-env"
-          version_label: ${{ github.sha }}
-          region: eu-north-1
-          deployment_package: deploy.zip
+      # - name: Generate deployment package
+      #   run: zip -r deploy.zip . -x '*.git*'
+
+      # - name: Deploy to EB
+      #   uses: einaregilsson/beanstalk-deploy@v22
+      #   with:
+      #     aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     application_name: "Depi"
+      #     environment_name: "Depi-env"
+      #     version_label: ${{ github.sha }}
+      #     region: eu-north-1
+      #     deployment_package: deploy.zip
+
+      # build docker images for microservices and push them to docker hub
+      - run: docker build -t mosab2004/mulit-client ./microservices/client
+      - run: docker build -t mosab2004/mulit-server ./microservices/server
+      - run: docker build -t mosab2004/mulit-nginx ./microservices/nginx
+      - run: docker build -t mosab2004/mulit-worker ./microservices/worker
+      - run: docker push mosab2004/mulit-client
+      - run: docker push mosab2004/mulit-server
+      - run: docker push mosab2004/mulit-nginx
+      - run: docker push mosab2004/mulit-worker
